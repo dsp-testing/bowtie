@@ -82,7 +82,7 @@ rich==13.7.0
     # via
     #   bowtie-json-schema (pyproject.toml)
     #   textual
-rpds-py==0.13.2
+rpds-py==0.15.2
     # via
     #   jsonschema
     #   referencing
