@@ -104,7 +104,7 @@ typing-extensions==4.8.0
     # via
     #   aiodocker
     #   textual
-uc-micro-py==1.0.2
+uc-micro-py==1.0.3
     # via linkify-it-py
 uritemplate==4.1.1
     # via github3-py
