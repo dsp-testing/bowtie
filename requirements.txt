@@ -42,7 +42,7 @@ idna==3.6
     # via
     #   requests
     #   yarl
-importlib-metadata==7.0.1
+importlib-metadata==7.0.2
     # via textual
 jsonschema==4.21.1
     # via bowtie-json-schema (pyproject.toml)
