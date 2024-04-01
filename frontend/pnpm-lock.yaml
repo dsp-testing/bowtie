@@ -16,7 +16,7 @@ dependencies:
     version: 18.2.0
   react-bootstrap:
     specifier: ^2.10.2
-    version: 2.10.2(@types/react@18.2.70)(react-dom@18.2.0)(react@18.2.0)
+    version: 2.10.2(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0)
   react-bootstrap-icons:
     specifier: ^1.11.3
     version: 1.11.3(react@18.2.0)
@@ -32,8 +32,8 @@ dependencies:
 
 devDependencies:
   '@types/react':
-    specifier: ^18.2.70
-    version: 18.2.70
+    specifier: ^18.2.73
+    version: 18.2.73
   '@types/react-dom':
     specifier: ^18.2.22
     version: 18.2.22
@@ -838,18 +838,14 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.44.0
-      '@types/estree': 1.0.1
+      '@types/estree': 1.0.5
     dev: true
 
   /@types/eslint@8.44.0:
     resolution: {integrity: sha512-gsF+c/0XOguWgaOgvFs+xnnRqt9GwgTvIks36WpE6ueeI4KCEHHd8K/CKHqhOqrJKsYH8m27kRzQEvWXAwXUTw==}
     dependencies:
-      '@types/estree': 1.0.1
+      '@types/estree': 1.0.5
       '@types/json-schema': 7.0.12
-    dev: true
-
-  /@types/estree@1.0.1:
-    resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
     dev: true
 
   /@types/estree@1.0.5:
@@ -870,24 +866,20 @@ packages:
   /@types/react-dom@18.2.22:
     resolution: {integrity: sha512-fHkBXPeNtfvri6gdsMYyW+dW7RXFo6Ad09nLFK0VQWR7yGLai/Cyvyj696gbwYvBnhGtevUG9cET0pmUbMtoPQ==}
     dependencies:
-      '@types/react': 18.2.70
+      '@types/react': 18.2.73
     dev: true
 
   /@types/react-transition-group@4.4.6:
     resolution: {integrity: sha512-VnCdSxfcm08KjsJVQcfBmhEQAPnLB8G08hAxn39azX1qYBQ/5RVQuoHuKIcfKOdncuaUvEpFKFzEvbtIMsfVew==}
     dependencies:
-      '@types/react': 18.2.70
+      '@types/react': 18.2.73
     dev: false
 
-  /@types/react@18.2.70:
-    resolution: {integrity: sha512-hjlM2hho2vqklPhopNkXkdkeq6Lv8WSZTpr7956zY+3WS5cfYUewtCzsJLsbW5dEv3lfSeQ4W14ZFeKC437JRQ==}
+  /@types/react@18.2.73:
+    resolution: {integrity: sha512-XcGdod0Jjv84HOC7N5ziY3x+qL0AfmubvKOZ9hJjJ2yd5EE+KYjWhdOjt387e9HPheHkdggF9atTifMRtyAaRA==}
     dependencies:
       '@types/prop-types': 15.7.5
-      '@types/scheduler': 0.16.3
       csstype: 3.1.2
-
-  /@types/scheduler@0.16.3:
-    resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
 
   /@types/semver@7.5.1:
     resolution: {integrity: sha512-cJRQXpObxfNKkFAZbJl2yjWtJCqELQIdShsogr1d2MilP8dKD9TE/nEKHkJgUNHdGKCQaf9HbIynuV2csLGVLg==}
@@ -2703,7 +2695,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-bootstrap@2.10.2(@types/react@18.2.70)(react-dom@18.2.0)(react@18.2.0):
+  /react-bootstrap@2.10.2(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-UvB7mRqQjivdZNxJNEA2yOQRB7L9N43nBnKc33K47+cH90/ujmnMwatTCwQLu83gLhrzAl8fsa6Lqig/KLghaA==}
     peerDependencies:
       '@types/react': '>=16.14.8'
@@ -2716,7 +2708,7 @@ packages:
       '@babel/runtime': 7.22.6
       '@restart/hooks': 0.4.9(react@18.2.0)
       '@restart/ui': 1.6.8(react-dom@18.2.0)(react@18.2.0)
-      '@types/react': 18.2.70
+      '@types/react': 18.2.73
       '@types/react-transition-group': 4.4.6
       classnames: 2.3.2
       dom-helpers: 5.2.1
@@ -3243,7 +3235,7 @@ packages:
       react: '>=15.0.0'
     dependencies:
       '@babel/runtime': 7.22.6
-      '@types/react': 18.2.70
+      '@types/react': 18.2.73
       invariant: 2.2.4
       react: 18.2.0
       react-lifecycles-compat: 3.0.4
@@ -3343,7 +3335,7 @@ packages:
         optional: true
     dependencies:
       '@types/eslint-scope': 3.7.4
-      '@types/estree': 1.0.1
+      '@types/estree': 1.0.5
       '@webassemblyjs/ast': 1.11.6
       '@webassemblyjs/wasm-edit': 1.11.6
       '@webassemblyjs/wasm-parser': 1.11.6
