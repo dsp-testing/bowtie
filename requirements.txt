@@ -71,7 +71,7 @@ pyjwt[crypto]==2.8.0
     # via github3-py
 python-dateutil==2.9.0.post0
     # via github3-py
-referencing==0.34.0
+referencing==0.35.0
     # via
     #   bowtie-json-schema (pyproject.toml)
     #   jsonschema
