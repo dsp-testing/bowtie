@@ -112,5 +112,5 @@ urllib3==2.2.1
     # via requests
 yarl==1.9.2
     # via aiohttp
-zipp==3.19.0
+zipp==3.19.1
     # via importlib-metadata
