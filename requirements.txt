@@ -4,7 +4,7 @@
 #
 #    pip-compile pyproject.toml
 #
-aiodocker==0.21.0
+aiodocker==0.22.1
     # via bowtie-json-schema (pyproject.toml)
 aiohttp==3.9.5
     # via aiodocker
