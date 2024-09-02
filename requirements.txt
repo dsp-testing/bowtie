@@ -38,7 +38,7 @@ frozenlist==1.4.1
     #   aiosignal
 github3-py==4.0.1
     # via bowtie-json-schema (pyproject.toml)
-idna==3.7
+idna==3.8
     # via
     #   requests
     #   yarl
