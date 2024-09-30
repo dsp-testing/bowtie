@@ -55,7 +55,7 @@ markdown-it-py[linkify,plugins]==3.0.0
     #   mdit-py-plugins
     #   rich
     #   textual
-mdit-py-plugins==0.4.1
+mdit-py-plugins==0.4.2
     # via markdown-it-py
 mdurl==0.1.2
     # via markdown-it-py
