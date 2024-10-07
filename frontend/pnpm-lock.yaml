@@ -19,7 +19,7 @@ importers:
         version: 18.3.1
       react-bootstrap:
         specifier: ^2.10.5
-        version: 2.10.5(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 2.10.5(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-bootstrap-icons:
         specifier: ^1.11.4
         version: 1.11.4(react@18.3.1)
@@ -34,8 +34,8 @@ importers:
         version: 1.19.11
     devDependencies:
       '@types/react':
-        specifier: ^18.3.8
-        version: 18.3.8
+        specifier: ^18.3.11
+        version: 18.3.11
       '@types/react-dom':
         specifier: ^18.3.0
         version: 18.3.0
@@ -532,8 +532,8 @@ packages:
   '@types/react-transition-group@4.4.6':
     resolution: {integrity: sha512-VnCdSxfcm08KjsJVQcfBmhEQAPnLB8G08hAxn39azX1qYBQ/5RVQuoHuKIcfKOdncuaUvEpFKFzEvbtIMsfVew==}
 
-  '@types/react@18.3.8':
-    resolution: {integrity: sha512-syBUrW3/XpnW4WJ41Pft+I+aPoDVbrBVQGEnbD7NijDGlVC+8gV/XKRY+7vMDlfPpbwYt0l1vd/Sj8bJGMbs9Q==}
+  '@types/react@18.3.11':
+    resolution: {integrity: sha512-r6QZ069rFTjrEYgFdOck1gK7FLVsgJE7tTz0pQBczlBNUhBNk0MQH4UbnFSwjpQLMkLzgqvBBa+qGpLje16eTQ==}
 
   '@types/semver@7.5.1':
     resolution: {integrity: sha512-cJRQXpObxfNKkFAZbJl2yjWtJCqELQIdShsogr1d2MilP8dKD9TE/nEKHkJgUNHdGKCQaf9HbIynuV2csLGVLg==}
@@ -2285,13 +2285,13 @@ snapshots:
 
   '@types/react-dom@18.3.0':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   '@types/react-transition-group@4.4.6':
     dependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
-  '@types/react@18.3.8':
+  '@types/react@18.3.11':
     dependencies:
       '@types/prop-types': 15.7.5
       csstype: 3.1.2
@@ -3444,7 +3444,7 @@ snapshots:
       prop-types: 15.8.1
       react: 18.3.1
 
-  react-bootstrap@2.10.5(@types/react@18.3.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-bootstrap@2.10.5(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.24.7
       '@restart/hooks': 0.4.9(react@18.3.1)
@@ -3461,7 +3461,7 @@ snapshots:
       uncontrollable: 7.2.1(react@18.3.1)
       warning: 4.0.3
     optionalDependencies:
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
 
   react-dom@18.3.1(react@18.3.1):
     dependencies:
@@ -3787,7 +3787,7 @@ snapshots:
   uncontrollable@7.2.1(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.24.7
-      '@types/react': 18.3.8
+      '@types/react': 18.3.11
       invariant: 2.2.4
       react: 18.3.1
       react-lifecycles-compat: 3.0.4
