@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up nox
-        uses: wntrblm/nox@2024.04.15
+        uses: wntrblm/nox@2024.10.09
       - id: noxenvs-matrix
         run: |
           echo >>$GITHUB_OUTPUT noxenvs=$(
@@ -47,7 +47,7 @@ jobs:
         run: brew install enchant podman
         if: runner.os == 'macOS'
       - name: Set up nox
-        uses: wntrblm/nox@2024.04.15
+        uses: wntrblm/nox@2024.10.09
       - name: Run nox
         run: nox -s "${{ matrix.noxenv }}"
 
@@ -72,7 +72,7 @@ jobs:
       - name: Create packages
         run: python -m build .
       - name: Set up nox
-        uses: wntrblm/nox@2024.04.15
+        uses: wntrblm/nox@2024.10.09
       - name: Create shiv
         run: mkdir shiv/ && nox -s shiv -- shiv/bowtie && chmod +x shiv/bowtie
       - name: Tar files
