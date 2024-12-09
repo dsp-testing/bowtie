@@ -86,7 +86,7 @@ rpds-py==0.20.1
     # via
     #   jsonschema
     #   referencing
-six==1.16.0
+six==1.17.0
     # via python-dateutil
 structlog==24.4.0
     # via bowtie-json-schema (pyproject.toml)
