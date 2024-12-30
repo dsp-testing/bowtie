@@ -15,7 +15,7 @@
     "react-bootstrap": "^2.10.7",
     "react-bootstrap-icons": "^1.11.5",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.1.0",
+    "react-router-dom": "^7.1.1",
     "urijs": "^1.19.11"
   },
   "devDependencies": {
