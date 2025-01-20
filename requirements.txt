@@ -88,7 +88,7 @@ rpds-py==0.22.3
     #   referencing
 six==1.17.0
     # via python-dateutil
-structlog==24.4.0
+structlog==25.1.0
     # via bowtie-json-schema (pyproject.toml)
 textual==1.0.0
     # via trogon
