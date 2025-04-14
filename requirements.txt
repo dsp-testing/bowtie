@@ -100,7 +100,7 @@ tree-sitter-languages==1.10.2
     # via textual
 trogon==0.6.0
     # via bowtie-json-schema (pyproject.toml)
-typing-extensions==4.13.1
+typing-extensions==4.13.2
     # via
     #   aiodocker
     #   textual
