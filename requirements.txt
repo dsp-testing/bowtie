@@ -32,7 +32,7 @@ click==8.1.8
     #   trogon
 cryptography==44.0.2
     # via pyjwt
-frozenlist==1.5.0
+frozenlist==1.6.0
     # via
     #   aiohttp
     #   aiosignal
