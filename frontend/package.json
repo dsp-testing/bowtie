@@ -14,13 +14,13 @@
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.9",
     "react-bootstrap-icons": "^1.11.5",
-    "react-dom": "^19.0.0",
+    "react-dom": "^19.1.0",
     "react-router-dom": "^7.5.0",
     "urijs": "^1.19.11"
   },
   "devDependencies": {
     "@types/react": "^19.1.1",
-    "@types/react-dom": "^19.0.4",
+    "@types/react-dom": "^19.1.2",
     "@types/urijs": "^1.19.25",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.21.0",
