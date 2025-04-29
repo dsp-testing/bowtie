@@ -1,4 +1,4 @@
-FROM gradle:8.13-jdk17 AS builder
+FROM gradle:8.14-jdk17 AS builder
 WORKDIR /opt/app
 COPY gradle/libs.versions.toml gradle/
 COPY settings.gradle.kts .
