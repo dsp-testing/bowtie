@@ -26,7 +26,7 @@ charset-normalizer==3.4.2
     # via
     #   aiohttp
     #   requests
-click==8.1.8
+click==8.2.1
     # via
     #   bowtie-json-schema (pyproject.toml)
     #   trogon
