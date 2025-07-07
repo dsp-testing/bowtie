@@ -8,7 +8,7 @@ aiodocker==0.24.0
     # via bowtie-json-schema (pyproject.toml)
 aiohttp==3.12.13
     # via aiodocker
-aiosignal==1.3.2
+aiosignal==1.4.0
     # via aiohttp
 async-timeout==5.0.1
     # via aiohttp
