@@ -50,7 +50,7 @@ jsonschema-specifications==2025.4.1
     # via jsonschema
 linkify-it-py==2.0.3
     # via markdown-it-py
-markdown-it-py[linkify,plugins]==3.0.0
+markdown-it-py[linkify,plugins]==4.0.0
     # via
     #   mdit-py-plugins
     #   rich
