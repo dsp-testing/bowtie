@@ -77,7 +77,7 @@ jobs:
         run: mkdir shiv/ && nox -s shiv -- shiv/bowtie && chmod +x shiv/bowtie
       - name: Tar files
         run: tar -cvf bowtie.tar dist shiv
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v5
         with:
           name: packages
           path: bowtie.tar
