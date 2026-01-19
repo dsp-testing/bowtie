@@ -1,4 +1,4 @@
-FROM gradle:9.2-jdk17 AS builder
+FROM gradle:9.3-jdk17 AS builder
 COPY BowtieJsonSchema.java /opt/app/BowtieJsonSchema.java
 COPY build.gradle /opt/app/build.gradle
 WORKDIR /opt/app
