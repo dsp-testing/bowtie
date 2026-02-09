@@ -67,7 +67,7 @@ pycparser==3.0
     # via cffi
 pygments==2.19.2
     # via rich
-pyjwt[crypto]==2.10.0
+pyjwt[crypto]==2.11.0
     # via github3-py
 python-dateutil==2.9.0.post0
     # via github3-py
