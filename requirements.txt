@@ -76,7 +76,7 @@ referencing==0.37.0
     #   bowtie-json-schema (pyproject.toml)
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.5
+requests==2.33.1
     # via github3-py
 rich==14.3.3
     # via
