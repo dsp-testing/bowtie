@@ -65,7 +65,7 @@ multidict==6.7.1
     #   yarl
 pycparser==3.0
     # via cffi
-pygments==2.19.2
+pygments==2.20.0
     # via rich
 pyjwt[crypto]==2.12.1
     # via github3-py
