@@ -19,7 +19,7 @@ jobs:
     outputs:
       noxenvs: ${{ steps.noxenvs-matrix.outputs.noxenvs }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up nox
         uses: wntrblm/nox@2026.02.09
       - id: noxenvs-matrix
@@ -37,7 +37,7 @@ jobs:
         noxenv: ${{ fromJson(needs.list.outputs.noxenvs) }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install dependencies
         run: >
           sudo apt-get update &&
@@ -62,7 +62,7 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
