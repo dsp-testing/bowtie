@@ -163,7 +163,7 @@ class DialectRunner:
 
 class _MakeValidator(Protocol):
     def __call__(self, dialect: str | None = None) -> Callable[..., None]:
-        ...
+        pass
 
 
 @mutable

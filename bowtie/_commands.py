@@ -96,14 +96,14 @@ R = TypeVar("R", covariant=True)
 
 class Command(Protocol[R]):
     def to_request(self, validate: Callable[..., None]) -> dict[str, Any]:
-        ...
+        pass
 
     @staticmethod
     def from_response(
         response: bytes,
         validate: Callable[..., None],
     ) -> R | None:
-        ...
+        pass
 
 
 @dataclass_transform()
