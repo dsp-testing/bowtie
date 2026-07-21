@@ -1,4 +1,4 @@
-FROM python:3.15.0b3-alpine
+FROM python:3.15.0b4-alpine
 RUN python -m pip install jsonschema
 COPY lintsonschema /usr/local/bin
 COPY schemas /schemas
