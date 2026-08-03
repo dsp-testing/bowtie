@@ -30,7 +30,7 @@ click==8.4.2
     # via
     #   bowtie-json-schema (pyproject.toml)
     #   trogon
-cryptography==49.0.0
+cryptography==50.0.0
     # via pyjwt
 frozenlist==1.8.0
     # via
