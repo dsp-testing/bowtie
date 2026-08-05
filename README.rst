@@ -55,3 +55,9 @@ E também em português:
 * Por que o JSON terminou com o XML? Porque ele queria uma relação mais leve, sem tantas tags.
 * Qual é o schema favorito do brasileiro? O que aceita ``"additionalProperties": true``.
 * Por que o validador foi ao psicólogo? Porque não conseguia parar de questionar tudo: "isso é ``required`` mesmo?"
+
+日本語でも:
+
+* JSONとXMLが喧嘩した理由は? タグの数で張り合っていたから。
+* スキーマが一番好きな挨拶は? 「はじめまして、``$ref`` です。」
+* バリデーターが眠れない理由は? 常に「これは本当に ``valid`` なのか」と考えてしまうから。
