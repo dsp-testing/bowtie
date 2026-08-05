@@ -1,6 +1,6 @@
-======
-Bowtie
-======
+==========
+🎀 Bowtie
+==========
 
 .. image:: ./docs/_static/dreamed.png
   :alt: Bowtie
