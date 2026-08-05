@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mandelbrot Set Renderer</title>
+<style>
+  :root {
+    color-scheme: dark;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  #canvas {
+    display: block;
+    cursor: grab;
+  }
+  #canvas.dragging {
+    cursor: grabbing;
+  }
+  #hud {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    color: #eee;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.5;
+    pointer-events: none;
+    user-select: none;
+    max-width: 320px;
+  }
+  #hud b {
+    color: #7fd6ff;
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div id="hud">
+  <div><b>Mandelbrot Set</b></div>
+  <div>Scroll / pinch to zoom &middot; drag to pan &middot; double-click to zoom in</div>
+  <div>Center: <span id="center">-0.5, 0</span></div>
+  <div>Zoom: <span id="zoom">1.00x</span></div>
+  <div>Iterations: <span id="iters">100</span></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const centerEl = document.getElementById("center");
+  const zoomEl = document.getElementById("zoom");
+  const itersEl = document.getElementById("iters");
+
+  // View state: center point in the complex plane and vertical span.
+  let centerX = -0.5;
+  let centerY = 0;
+  let scale = 3.0; // height of the view in the complex plane
+  const baseScale = 3.0;
+
+  let width = 0;
+  let height = 0;
+  let imageData = null;
+
+  let renderHandle = null;
+  let renderToken = 0;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    imageData = ctx.createImageData(canvas.width, canvas.height);
+    scheduleRender();
+  }
+
+  function maxIterationsForScale(currentScale) {
+    const zoomFactor = baseScale / currentScale;
+    const iters = 80 + Math.floor(40 * Math.log2(Math.max(zoomFactor, 1)));
+    return Math.min(iters, 2000);
+  }
+
+  // Smooth color palette using a simple HSL-based gradient.
+  function colorForIteration(iter, maxIter, smooth) {
+    if (iter >= maxIter) {
+      return [0, 0, 0];
+    }
+    const t = (iter + 1 - smooth) / maxIter;
+    const hue = 360 * (0.66 + 5 * t) % 360;
+    const sat = 0.8;
+    const light = 0.5 * Math.min(1, t * 3);
+    return hslToRgb(hue / 360, sat, Math.max(0.03, light));
+  }
+
+  function hslToRgb(h, s, l) {
+    let r, g, b;
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+      };
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1 / 3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1 / 3);
+    }
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  }
+
+  function render() {
+    const w = canvas.width;
+    const h = canvas.height;
+    if (w === 0 || h === 0) return;
+
+    const maxIter = maxIterationsForScale(scale);
+    itersEl.textContent = String(maxIter);
+
+    const viewHeight = scale;
+    const viewWidth = (scale * w) / h;
+
+    const xMin = centerX - viewWidth / 2;
+    const yMin = centerY - viewHeight / 2;
+
+    const data = imageData.data;
+    const token = ++renderToken;
+
+    // Render in horizontal strips, yielding to the event loop between
+    // chunks so panning/zooming interactions remain responsive even at
+    // high iteration counts.
+    const chunkSize = 32;
+    let row = 0;
+
+    function renderChunk() {
+      if (token !== renderToken) return; // a newer render superseded this one
+
+      const rowsEnd = Math.min(row + chunkSize, h);
+      for (let py = row; py < rowsEnd; py++) {
+        const y0 = yMin + (py / h) * viewHeight;
+        for (let px = 0; px < w; px++) {
+          const x0 = xMin + (px / w) * viewWidth;
+
+          let x = 0, y = 0;
+          let x2 = 0, y2 = 0;
+          let iter = 0;
+          while (x2 + y2 <= 4 && iter < maxIter) {
+            y = 2 * x * y + y0;
+            x = x2 - y2 + x0;
+            x2 = x * x;
+            y2 = y * y;
+            iter++;
+          }
+
+          let smooth = 0;
+          if (iter < maxIter) {
+            const logZn = Math.log(x2 + y2) / 2;
+            smooth = Math.log(logZn / Math.LN2) / Math.LN2;
+          }
+
+          const [r, g, b] = colorForIteration(iter, maxIter, smooth);
+          const idx = (py * w + px) * 4;
+          data[idx] = r;
+          data[idx + 1] = g;
+          data[idx + 2] = b;
+          data[idx + 3] = 255;
+        }
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+      row = rowsEnd;
+      if (row < h) {
+        renderHandle = requestAnimationFrame(renderChunk);
+      }
+    }
+
+    if (renderHandle) cancelAnimationFrame(renderHandle);
+    renderHandle = requestAnimationFrame(renderChunk);
+  }
+
+  let renderScheduled = false;
+  function scheduleRender() {
+    if (renderScheduled) return;
+    renderScheduled = true;
+    requestAnimationFrame(() => {
+      renderScheduled = false;
+      updateHud();
+      render();
+    });
+  }
+
+  function updateHud() {
+    centerEl.textContent = centerX.toFixed(6) + ", " + centerY.toFixed(6);
+    zoomEl.textContent = (baseScale / scale).toFixed(2) + "x";
+  }
+
+  function screenToComplex(px, py) {
+    const w = canvas.width;
+    const h = canvas.height;
+    const viewHeight = scale;
+    const viewWidth = (scale * w) / h;
+    const dpr = w / width;
+    const x = centerX - viewWidth / 2 + ((px * dpr) / w) * viewWidth;
+    const y = centerY - viewHeight / 2 + ((py * dpr) / h) * viewHeight;
+    return [x, y];
+  }
+
+  // --- Interaction: drag to pan ---
+  let dragging = false;
+  let lastX = 0, lastY = 0;
+
+  canvas.addEventListener("pointerdown", (e) => {
+    dragging = true;
+    canvas.classList.add("dragging");
+    lastX = e.clientX;
+    lastY = e.clientY;
+    canvas.setPointerCapture(e.pointerId);
+  });
+
+  canvas.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    lastX = e.clientX;
+    lastY = e.clientY;
+
+    const viewWidth = (scale * canvas.width) / canvas.height;
+    centerX -= (dx / width) * viewWidth;
+    centerY -= (dy / height) * scale;
+    scheduleRender();
+  });
+
+  function endDrag(e) {
+    dragging = false;
+    canvas.classList.remove("dragging");
+  }
+  canvas.addEventListener("pointerup", endDrag);
+  canvas.addEventListener("pointercancel", endDrag);
+  canvas.addEventListener("pointerleave", endDrag);
+
+  // --- Interaction: scroll / pinch to zoom, centered on cursor ---
+  canvas.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const [px, py] = screenToComplex(e.clientX, e.clientY);
+    const zoomFactor = Math.exp(e.deltaY * 0.0015);
+    scale *= zoomFactor;
+    scale = Math.max(1e-13, Math.min(scale, 6));
+
+    // Keep the point under the cursor fixed while zooming.
+    const [px2, py2] = screenToComplex(e.clientX, e.clientY);
+    centerX += px - px2;
+    centerY += py - py2;
+    scheduleRender();
+  }, { passive: false });
+
+  // --- Interaction: double-click to zoom in on that point ---
+  canvas.addEventListener("dblclick", (e) => {
+    const [px, py] = screenToComplex(e.clientX, e.clientY);
+    centerX = px;
+    centerY = py;
+    scale = Math.max(1e-13, scale * 0.4);
+    scheduleRender();
+  });
+
+  // --- Interaction: touch pinch-to-zoom ---
+  let pinchStartDist = null;
+  let pinchStartScale = 1;
+
+  canvas.addEventListener("touchstart", (e) => {
+    if (e.touches.length === 2) {
+      const [t1, t2] = e.touches;
+      pinchStartDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      pinchStartScale = scale;
+    }
+  }, { passive: true });
+
+  canvas.addEventListener("touchmove", (e) => {
+    if (e.touches.length === 2 && pinchStartDist) {
+      const [t1, t2] = e.touches;
+      const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+      scale = Math.max(1e-13, Math.min(pinchStartScale * (pinchStartDist / dist), 6));
+      scheduleRender();
+    }
+  }, { passive: true });
+
+  canvas.addEventListener("touchend", () => {
+    pinchStartDist = null;
+  });
+
+  window.addEventListener("resize", resize);
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "r" || e.key === "R") {
+      centerX = -0.5;
+      centerY = 0;
+      scale = baseScale;
+      scheduleRender();
+    }
+  });
+
+  resize();
+})();
+</script>
+</body>
+</html>
