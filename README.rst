@@ -49,3 +49,9 @@ Bowtie Humor
 * What do you call a bowtie that fans in lots of schemas? Sharply dressed, and also very fast.
 * Why don't JSON documents ever get lost? They always know their ``$schema``.
 * An implementation walks into Bowtie and says "test me". Bowtie says, "sure, but only if you conform."
+
+E também em português:
+
+* Por que o JSON terminou com o XML? Porque ele queria uma relação mais leve, sem tantas tags.
+* Qual é o schema favorito do brasileiro? O que aceita ``"additionalProperties": true``.
+* Por que o validador foi ao psicólogo? Porque não conseguia parar de questionar tudo: "isso é ``required`` mesmo?"
