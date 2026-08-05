@@ -41,3 +41,11 @@ Looks like a bowtie, no?
 Also because it's elegant – we hope.
 
 For more information, see `Bowtie's documentation <https://docs.bowtie.report/>`_.
+
+Bowtie Humor
+------------
+
+* Why did the JSON Schema break up with the YAML file? Too many trust issues – it just couldn't validate the relationship.
+* What do you call a bowtie that fans in lots of schemas? Sharply dressed, and also very fast.
+* Why don't JSON documents ever get lost? They always know their ``$schema``.
+* An implementation walks into Bowtie and says "test me". Bowtie says, "sure, but only if you conform."
