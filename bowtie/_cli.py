@@ -28,6 +28,7 @@ import structlog.typing
 
 from bowtie import _report
 from bowtie._commands import Test, TestCase
+from bowtie._utils import pluralize
 from bowtie._core import (
     DialectRunner,
     GotStderr,
@@ -207,14 +208,13 @@ def _failure_table(
     summary: _report._Summary,  # type: ignore[reportPrivateUsage]
     results: list[tuple[tuple[str, str], _report.Count]],
 ):
-    test = "tests" if summary.total_tests != 1 else "test"
     table = Table(
         "Implementation",
         "Skips",
         "Errors",
         "Failures",
         title="Bowtie",
-        caption=f"{summary.total_tests} {test} ran\n",
+        caption=f"{pluralize(summary.total_tests, 'test')} ran\n",
     )
     for (implementation, language), counts in results:
         table.add_row(
@@ -252,12 +252,11 @@ def _validation_results_table(
     summary: _report._Summary,  # type: ignore[reportPrivateUsage]
     results: Iterable[tuple[Any, Iterable[tuple[Any, dict[str, str]]]]],
 ):
-    test = "tests" if summary.total_tests != 1 else "test"
     table = Table(
         Column(header="Schema", vertical="middle"),
         "",
         title="Bowtie",
-        caption=f"{summary.total_tests} {test} ran",
+        caption=f"{pluralize(summary.total_tests, 'test')} ran",
     )
 
     for schema, case_results in results:
