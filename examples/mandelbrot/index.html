@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Mandelbrot Set Renderer</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #111;
+    color: #eee;
+    font-family: system-ui, sans-serif;
+    overflow: hidden;
+  }
+  #controls {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 260px;
+  }
+  #controls button {
+    background: #333;
+    color: #eee;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    margin-right: 4px;
+  }
+  #controls button:hover {
+    background: #444;
+  }
+  canvas {
+    display: block;
+    cursor: crosshair;
+  }
+  #status {
+    position: fixed;
+    bottom: 8px;
+    left: 8px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<div id="controls">
+  <strong>Mandelbrot Renderer</strong><br/>
+  Scroll or click to zoom in, shift+click to zoom out.<br/>
+  Drag to pan.<br/>
+  <button id="reset">Reset View</button>
+  <button id="save">Save PNG</button>
+</div>
+<div id="status"></div>
+<canvas id="canvas"></canvas>
+
+<script>
+(function () {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const statusEl = document.getElementById('status');
+
+  const DEFAULT_VIEW = { centerX: -0.5, centerY: 0, scale: 3 };
+  let view = { ...DEFAULT_VIEW };
+  let maxIterations = 300;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  // Smooth coloring based on a classic palette derived from the escape
+  // iteration count and a continuous (fractional) correction.
+  function palette(t) {
+    // t in [0, 1)
+    const r = Math.floor(9 * (1 - t) * t * t * t * 255);
+    const g = Math.floor(15 * (1 - t) * (1 - t) * t * t * 255);
+    const b = Math.floor(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+    return [r, g, b];
+  }
+
+  function mandelbrotIterations(cx, cy, maxIter) {
+    let x = 0;
+    let y = 0;
+    let x2 = 0;
+    let y2 = 0;
+    let iter = 0;
+    // Cardioid / period-2 bulb check for a quick early-out on large
+    // interior regions (avoids wasting iterations inside the set).
+    const q = (cx - 0.25) * (cx - 0.25) + cy * cy;
+    if (q * (q + (cx - 0.25)) < 0.25 * cy * cy) return maxIter;
+    if ((cx + 1) * (cx + 1) + cy * cy < 0.0625) return maxIter;
+
+    while (x2 + y2 <= 4 && iter < maxIter) {
+      y = 2 * x * y + cy;
+      x = x2 - y2 + cx;
+      x2 = x * x;
+      y2 = y * y;
+      iter++;
+    }
+
+    if (iter === maxIter) return maxIter;
+
+    // Smooth iteration count for continuous coloring.
+    const log_zn = Math.log(x2 + y2) / 2;
+    const nu = Math.log(log_zn / Math.LN2) / Math.LN2;
+    return iter + 1 - nu;
+  }
+
+  function render() {
+    const w = canvas.width;
+    const h = canvas.height;
+    const imgData = ctx.createImageData(w, h);
+    const data = imgData.data;
+
+    const aspect = w / h;
+    const scaleX = view.scale * aspect;
+    const scaleY = view.scale;
+
+    for (let py = 0; py < h; py++) {
+      const cy = view.centerY + (py / h - 0.5) * scaleY;
+      for (let px = 0; px < w; px++) {
+        const cx = view.centerX + (px / w - 0.5) * scaleX;
+        const iter = mandelbrotIterations(cx, cy, maxIterations);
+        const idx = (py * w + px) * 4;
+
+        if (iter >= maxIterations) {
+          data[idx] = 0;
+          data[idx + 1] = 0;
+          data[idx + 2] = 0;
+          data[idx + 3] = 255;
+        } else {
+          const t = iter / maxIterations;
+          const [r, g, b] = palette(t);
+          data[idx] = r;
+          data[idx + 1] = g;
+          data[idx + 2] = b;
+          data[idx + 3] = 255;
+        }
+      }
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+    statusEl.textContent =
+      `center=(${view.centerX.toFixed(6)}, ${view.centerY.toFixed(6)}) ` +
+      `scale=${view.scale.toExponential(3)} iterations=${maxIterations}`;
+  }
+
+  function screenToComplex(px, py) {
+    const w = canvas.width;
+    const h = canvas.height;
+    const aspect = w / h;
+    const scaleX = view.scale * aspect;
+    const scaleY = view.scale;
+    return {
+      x: view.centerX + (px / w - 0.5) * scaleX,
+      y: view.centerY + (py / h - 0.5) * scaleY,
+    };
+  }
+
+  function zoomAt(px, py, factor) {
+    const target = screenToComplex(px, py);
+    view.centerX = target.x + (view.centerX - target.x) * factor;
+    view.centerY = target.y + (view.centerY - target.y) * factor;
+    view.scale *= factor;
+    // Increase iteration budget as we zoom in for better detail.
+    maxIterations = Math.min(2000, Math.round(300 + 80 * Math.log2(DEFAULT_VIEW.scale / view.scale + 1)));
+    render();
+  }
+
+  let isDragging = false;
+  let dragStart = null;
+  let dragMoved = false;
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    dragMoved = false;
+    dragStart = { x: e.clientX, y: e.clientY, view: { ...view } };
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - dragStart.x;
+    const dy = e.clientY - dragStart.y;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true;
+    if (!dragMoved) return;
+
+    const aspect = canvas.width / canvas.height;
+    const scaleX = dragStart.view.scale * aspect;
+    const scaleY = dragStart.view.scale;
+    view.centerX = dragStart.view.centerX - (dx / canvas.width) * scaleX;
+    view.centerY = dragStart.view.centerY - (dy / canvas.height) * scaleY;
+    render();
+  });
+
+  window.addEventListener('mouseup', (e) => {
+    if (isDragging && !dragMoved) {
+      // Treat as a click-to-zoom.
+      const factor = e.shiftKey ? 2 : 0.5;
+      zoomAt(e.clientX, e.clientY, factor);
+    }
+    isDragging = false;
+  });
+
+  canvas.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const factor = e.deltaY > 0 ? 1.2 : 1 / 1.2;
+    zoomAt(e.clientX, e.clientY, factor);
+  }, { passive: false });
+
+  document.getElementById('reset').addEventListener('click', () => {
+    view = { ...DEFAULT_VIEW };
+    maxIterations = 300;
+    render();
+  });
+
+  document.getElementById('save').addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'mandelbrot.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    render();
+  });
+
+  resizeCanvas();
+  render();
+})();
+</script>
+</body>
+</html>
