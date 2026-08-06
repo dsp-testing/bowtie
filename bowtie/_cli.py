@@ -28,7 +28,6 @@ import structlog.typing
 
 from bowtie import _report
 from bowtie._commands import Test, TestCase
-from bowtie._utils import pluralize
 from bowtie._core import (
     DialectRunner,
     GotStderr,
@@ -36,6 +35,7 @@ from bowtie._core import (
     NoSuchImage,
     StartupFailed,
 )
+from bowtie._utils import pluralize
 from bowtie.exceptions import (
     _ProtocolError,  # type: ignore[reportPrivateUsage]
 )
