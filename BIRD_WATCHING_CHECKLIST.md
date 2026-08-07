@@ -26,12 +26,6 @@ A simple checklist to track birds spotted during birding trips.
 - [ ] Great Blue Heron
 - [ ] Belted Kingfisher
 
-## Birds of Prey
-- [ ] Red-tailed Hawk
-- [ ] American Kestrel
-- [ ] Bald Eagle
-- [ ] Great Horned Owl
-
 ## Notes
 Use this space to jot down date, location, and weather conditions for each outing:
 
