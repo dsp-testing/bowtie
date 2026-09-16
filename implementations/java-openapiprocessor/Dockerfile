@@ -4,6 +4,6 @@ COPY . .
 RUN gradle installDist --no-daemon
 RUN chmod +x ./build/install/bowtie/bin/openapiprocessor
 
-FROM bellsoft/liberica-openjdk-alpine:26
+FROM bellsoft/liberica-openjdk-alpine:27
 COPY --from=builder /opt/app/build /opt/app/build
 CMD ["/opt/app/build/install/bowtie/bin/openapiprocessor"]
